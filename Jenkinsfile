@@ -4,9 +4,9 @@ pipeline {
 	options { timeout(time: 1, unit: 'HOURS') }
 	
 	triggers { cron('* * * * *') }
-        parameters {
-                        choice(name: 'GOAL', choices: ['clean', 'clean package', 'clean install'], description: 'choice 'GOALS FOR MAVEN') 
-        }
+         parameters {
+                choice(name: 'GOAL', choices: ['clean', 'clean package', 'clean install'], description: 'GOALS FOR MAVEN')
+         }
 	stages {
 		stage('Git Clone') {
 			steps {
@@ -16,7 +16,7 @@ pipeline {
 		
 		stage('Build Package') {
 			steps {
-				sh "'/opt/apache-maven-3.9.9/bin/mvn ${params.GOAL}'"
+				sh "/opt/apache-maven-3.9.9/bin/mvn ${params.GOAL}"
 			}
 		}
 		
