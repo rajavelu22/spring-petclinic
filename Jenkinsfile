@@ -3,7 +3,7 @@ pipeline {
 	
 	options { timeout(time: 1, unit: 'HOURS') }
 	
-	triggers { cron('* * * * *') }
+	triggers { cron('0 * * * *') }
          parameters {
                 choice(name: 'GOAL', choices: ['clean', 'clean package', 'clean install'], description: 'GOALS FOR MAVEN')
          }
