@@ -1,12 +1,6 @@
 pipeline {
-	agent any
-	
-	options { timeout(time: 1, unit: 'HOURS') }
-	
-	triggers { cron('0 * * * *') }
-         parameters {
-                choice(name: 'GOAL', choices: ['clean', 'clean package', 'clean install'], description: 'GOALS FOR MAVEN')
-         }
+	agent 
+	agent { label 'slave' } 
 	stages {
 		stage('Git Clone') {
 			steps {
@@ -14,13 +8,16 @@ pipeline {
 			}
 		}
 		
-		stage('Build Package') {
+		stage('Build Package and sonarQube analysis') {
 			steps {
-				sh "/opt/apache-maven-3.9.9/bin/mvn ${params.GOAL}"
+				
+                                 withSonarQubeEnv('My SonarQube Server') {
+                                sh "/opt/apache-maven-3.9.9/bin/mvn clean package sonar:sonar"
+              }
 			}
 		}
 		
-		stage('Run Tests') {
+		stage('Archiving the reports for xml') {
 			steps {
 				junit testResults: 'target/surefire-reports/*.xml'
 			}
