@@ -11,7 +11,7 @@ pipeline {
 			steps {
 				
                                  withSonarQubeEnv('My SonarQube Server') {
-                                sh "mvn clean package sonar:sonar"
+                                sh "mvn clean package sonar:sonar -e -X"
               }
 			}
 		}
